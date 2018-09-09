@@ -1,1 +1,13 @@
-test
+void setup() {
+  // initialize digital pin 13 as an output.
+  pinMode(8, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  // frequency 13 hz
+  digitalWrite(8, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(38.4615);              
+  digitalWrite(8, LOW);    // turn the LED off by making the voltage LOW
+  delay(38.4615);              
+}
