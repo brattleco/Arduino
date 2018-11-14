@@ -1,7 +1,7 @@
 // final program for blue player
-//shoot for red player
-// left and right red player
-
+//shoot for blue player
+// left and right blue player
+boolean flag = 0;
 int motorpin1 = 3;  
 int EnA = 5;
 int motorpin2 = 6;
@@ -24,7 +24,7 @@ void setup()
 {
 
   //----------------- gyro -------------
-Serial.begin  (9600); 
+Serial.begin  (115200); 
 Serial.println  ( "Initializing the sensor" ); 
 sensor.initialize ( ); 
 Serial.println (sensor.testConnection ( ) ? "Successfully Connected" : "Connection failed"); 
@@ -41,15 +41,15 @@ delay (1000);
   pinMode (EnB,OUTPUT );
   pinMode (motorpin4,OUTPUT);
 
-  pinMode(7,INPUT);
+  pinMode(4,INPUT);
   pinMode(12,INPUT);
-  pinMode(13,OUTPUT);
+  pinMode(7, INPUT);
   
-// digitalWrite(13,LOW);  // reset pin
+//  pinMode(13,OUTPUT);  
+
+  pinMode(14,OUTPUT);  // reset pin
 
 }
-
-
 void loop()
 {
  // digitalWrite(13,LOW);  
@@ -61,8 +61,8 @@ Serial.println (ax);
 
 //-------------------------------------
       //back red player after shoot
-        if (ax >= -170 && ax <= -40){
-      in(0,35,35);
+        if (ax >= -170 && ax <= -10){
+      in(0,200,200);
     }else{
       in(0,0,0);
       
@@ -77,16 +77,30 @@ Serial.println (ax);
     
     // back again red player after shoot, for correction
     if (ax >= 60 && ax<= 120){
-      in(42,42,0);
+      in(200,200,0);
     }
           
 int left_red = digitalRead(12);
 int right_red = digitalRead(4);
+int key = digitalRead(7);
+
+if (key == HIGH){
+  flag = 1;
+  shootB();
+  delay(50);
+  if (flag == 1){
+  digitalWrite(14,HIGH);
+  delay(20);
+  digitalWrite(14,LOW);
+  delay(20);
+}
+}
 
 if (left_red == HIGH )
 { 
+    in(0,0,0);
     out(0,255,255);
-    delay(200);
+    delay(10);
     out(0,0,0);
 }
 if (left_red == LOW )
@@ -95,8 +109,9 @@ if (left_red == LOW )
   //  delay(200);
 }
 if (right_red == HIGH){
+  in(0,0,0);
   out(255,255,0);
-  delay(200);
+  delay(10);
   out(0,0,0);
 }
 if (right_red == LOW )
@@ -104,78 +119,24 @@ if (right_red == LOW )
     out(0,0,0);
  //   delay(200);
 }
-
-
-       
-if (Serial.available() > 0) {
-
-incomingByte = Serial.read();
-
-     
-if (incomingByte == 'B') 
-  {
-    shootB();
-
-}
-
- if (incomingByte == 'A' ) 
-  {
-shootA();
- }
-
-}
-
 } 
-
 
 void out (int motorpin1val , int EnAval , int motorpin2val) {
   analogWrite (motorpin1 , motorpin1val);
    analogWrite (EnA , EnAval);
     analogWrite (motorpin2 , motorpin2val);
-  
 }
-
 
 void in (int motorpin3val , int EnBval , int motorpin4val) {
   analogWrite (motorpin3 , motorpin3val);
    analogWrite (EnB , EnBval);
     analogWrite (motorpin4 , motorpin4val);
-  
-}
-
-void shootA(){ 
-   digitalWrite(13,HIGH);
-   delay(1000);
-   digitalWrite(13,LOW);
-   delay(100); 
- out(255,255,0);
-    delay(100);
-    out(0,0,0);
-     delay(1000);
-     out(0,255,255);
-     delay(400);
-     out(0,0,0);
-     delay(1000);
-
-      out(0,150,150);
-
-     // out(255,255,0);
-  //  delay(100);
-  //  out(0,0,0);
-    incomingByte = 'd';
-   // delay(1000);
 }
 
 void shootB(){
   
-   digitalWrite(13,HIGH);         //buzzer
-   delay(1000);
-   
-   digitalWrite(13,LOW);
-   delay(100);
-   
     in(0,255,255);
-    delay(150);
+    delay(250);
     
     in(0,0,0);
      delay(1000);
@@ -185,13 +146,7 @@ void shootB(){
      
      in(0,0,0);
      delay(200);
-     
- /*   in(0,255,255);
-    delay(200);
-    in(0,0,0);
-     delay(1000);
-      */
+
     incomingByte = 'd';
-  //  delay(1000);
  
 }
