@@ -1,4 +1,4 @@
-// final program for red player
+// Iranian Museum of Brain, final program for red player
 //shoot for red player
 // left and right red player
 int motorpin1 = 3;  
